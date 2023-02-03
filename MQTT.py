@@ -21,7 +21,7 @@ password = '7023593'
 # Variable to store broker reply/message sent to client
 reply = []
 
-# Dictionary to store mapping between cmd sent by broker and the corresponding reply
+# Dictionary to store corresponding mapping between command and reply
 reply_dict = {'CMD1': 'Apple',
               'CMD2': 'Cat',
               'CMD3': 'Dog',
@@ -69,14 +69,14 @@ def publish(client, msg, topic):
     else:
         print(f"Failed to send message to topic {topic}")
 
-# Subscribe to MQTT broker's messages to specific topics defaulting to topic='7023593/UUID'
+# Subscribe to broker's messages for topics defaulting to topic='7023593/UUID'
 def subscribe(client, topic='7023593/UUID'):
 
-    # Function to decode broker's reply and append it to REPLY variable as a string
+    # In-Built function to receive messages
     def on_message(client, userdata, msg):
-        # Message is a binary data. So, decode and convert it to string format before append
+        # Message is a binary data.Decode and convert it to string before append
         reply.append(str(msg.payload.decode("utf-8")))
-        print(f"\n Received {reply[0]} from {msg.topic} topic")
+        print(f"Received {reply[0]} from {msg.topic} topic")
 
     client.subscribe(topic)
     client.on_message = on_message
@@ -90,7 +90,7 @@ def run():
     publish(client, password, topic)
     time.sleep(1)
     subscribe(client, reply[0])
-    # Wait 3 seconds after publishing UNIQUE ID to topic UNIQUE ID
+    # Wait 3 seconds after publishing UNIQUE ID
     time.sleep(3)
     while True:
         if (len(reply) > 1):
